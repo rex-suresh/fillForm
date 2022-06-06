@@ -52,6 +52,7 @@ const captureHobbies = (hobbies, formEntry) => {
 const fillForm = (entry) => {
   const formFile = './formsData.json'; 
   fs.writeFileSync(formFile, JSON.stringify(entry), 'utf8');
+  setImmediate(() => process.exit(0));
 };
 
 const fieldData = [
@@ -68,7 +69,6 @@ const fieldData = [
     message: 'Please Enter Your Hobbies : '
   },
   {
-    capture: () => process.exit(0),
     message: 'Thank You'
   }
 ];

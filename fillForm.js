@@ -19,6 +19,8 @@ const validateHobbies = (hobbies) => hobbies.length < 1;
 const validatePhoneNumber = (phoneNumber) => phoneNumber.toString()
   .length === 10 && isFinite(phoneNumber);
 
+const validateAddress = (address) => address.length > 0;
+
 const captureName = (name, formEntry) => {
   const formatIncorrect = validateName(name);
   if (formatIncorrect) {
@@ -58,6 +60,26 @@ const capturePhoneNumber = (phoneNumber, formEntry) => {
   }
   
   formEntry.phoneNumber = phoneNumber.toString();
+  return true;
+};
+
+const captureAddressLine1 = (address, formEntry) => {
+  const formatCorrect = validateAddress(address);
+  if (!formatCorrect) {
+    return false;
+  }
+  
+  formEntry.address = address;
+  return true;
+};
+
+const captureAddressLine2 = (address, formEntry) => {
+  const formatCorrect = validateAddress(address);
+  if (!formatCorrect) {
+    return false;
+  }
+  
+  formEntry.address = formEntry.address + ' ' + address;
   fillForm(formEntry);
   return true;
 };
@@ -84,6 +106,14 @@ const fieldData = [
   {
     capture: capturePhoneNumber,
     message: 'Please Enter Your Phone Number : '
+  },
+  {
+    capture: captureAddressLine1,
+    message: 'Please Enter Your Address line 1 : '
+  },
+  {
+    capture: captureAddressLine2,
+    message: 'Please Enter Your Address line 2 : '
   },
   {
     message: 'Thank You'

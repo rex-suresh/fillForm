@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-const isAlphabet = (char) => /[A-z]/.test(char);
 const trimLine = (lines) => lines.trim();
 
+const isAlphabet = (char) => /[A-z ]/.test(char);
 const validateName = (name) => {
   const nonAlphas = [].every.bind(name);
   return name.length < 5 || !nonAlphas(char => isAlphabet(char));
@@ -15,6 +15,9 @@ const validateDate = (date) => {
 };
 
 const validateHobbies = (hobbies) => hobbies.length < 1;
+
+const validatePhoneNumber = (phoneNumber) => phoneNumber.toString()
+  .length === 10 && isFinite(phoneNumber);
 
 const captureName = (name, formEntry) => {
   const formatIncorrect = validateName(name);
@@ -45,6 +48,16 @@ const captureHobbies = (hobbies, formEntry) => {
   
   const hobbiesList = hobbies.split(',');
   formEntry.hobbies = hobbiesList;
+  return true;
+};
+
+const capturePhoneNumber = (phoneNumber, formEntry) => {
+  const formatCorrect = validatePhoneNumber(phoneNumber);
+  if (!formatCorrect) {
+    return false;
+  }
+  
+  formEntry.phoneNumber = phoneNumber.toString();
   fillForm(formEntry);
   return true;
 };
@@ -67,6 +80,10 @@ const fieldData = [
   {
     capture: captureHobbies,
     message: 'Please Enter Your Hobbies : '
+  },
+  {
+    capture: capturePhoneNumber,
+    message: 'Please Enter Your Phone Number : '
   },
   {
     message: 'Thank You'

@@ -1,13 +1,19 @@
 const fs = require('fs');
 
 const isAlphabet = (char) => /[A-z]/.test(char);
+const trimLine = (lines) => lines.trim();
 
-const captureName = (name, formEntry) => {
+const validateName = (name) => {
   const nonAlphas = [].every.bind(name);
-  if (name.length < 5 || nonAlphas(char => !isAlphabet(char))) {
+  return name.length < 5 || !nonAlphas(char => isAlphabet(char));
+};
+const captureName = (name, formEntry) => {
+  const formatIncorrect = validateName(name);
+  if (formatIncorrect) {
     return false;
   }
-  const newName = name.trim();
+
+  const newName = name;
   formEntry.name = newName;
   return true;
 };
@@ -19,21 +25,24 @@ const validateDate = (date) => {
 };
 
 const captureDOB = (DOB, formEntry) => {
-  const dob = DOB.trim().split('-');
+  const dob = DOB.split('-');
   const formatCorrect = validateDate(dob);
   if (!formatCorrect) {
     return false;
   }
+  
   formEntry.DOB = dob.map(datePart => parseInt(datePart));
   return true;
 };
 
+const validateHobbies = (hobbies) => hobbies.length < 1;
+
 const captureHobbies = (hobbies, formEntry) => {
-  if (hobbies.trim().length < 1) {
+  if (validateHobbies(hobbies)) {
     return false;
   }
-
-  const hobbiesList = hobbies.trim().split(',');
+  
+  const hobbiesList = hobbies.split(',');
   formEntry.hobbies = hobbiesList;
   fillForm(formEntry);
   return true;
@@ -71,7 +80,7 @@ const main = () => {
   
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (cell) => {
-    const captureStatus = capture(cell, formEntry);
+    const captureStatus = capture(trimLine(cell), formEntry);
     if (captureStatus) {
       currentField++;
     }

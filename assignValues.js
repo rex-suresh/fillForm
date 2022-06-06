@@ -67,7 +67,7 @@ const assignAddressLine2 = (address, formEntry) => {
 
 const fillForm = (entry) => {
   const formFile = './formsData.json'; 
-  fs.writeFileSync(formFile, JSON.stringify(entry), 'utf8');
+  fs.writeFileSync(formFile, JSON.stringify(entry, ' ', 2), 'utf8');
   setImmediate(() => process.exit(0));
 };
 

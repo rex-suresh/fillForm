@@ -1,9 +1,9 @@
 const fs = require('fs');
-const { validateName, validateDate, validateHobbies,
-  validatePhoneNumber, validateAddress } = require('./validations.js');
+const { isNameValid, isDateValid, isHobbiesValid,
+  isPhoneNumberValid, isAddressValid } = require('./validations.js');
 
 const assignName = (name, formEntry) => {
-  const formatIncorrect = validateName(name);
+  const formatIncorrect = isNameValid(name);
   if (formatIncorrect) {
     return false;
   }
@@ -15,7 +15,7 @@ const assignName = (name, formEntry) => {
 
 const assignDOB = (DOB, formEntry) => {
   const dob = DOB.split('-');
-  const formatCorrect = validateDate(dob);
+  const formatCorrect = isDateValid(dob);
   if (!formatCorrect) {
     return false;
   }
@@ -25,7 +25,7 @@ const assignDOB = (DOB, formEntry) => {
 };
 
 const assignHobbies = (hobbies, formEntry) => {
-  if (validateHobbies(hobbies)) {
+  if (isHobbiesValid(hobbies)) {
     return false;
   }
   
@@ -35,7 +35,7 @@ const assignHobbies = (hobbies, formEntry) => {
 };
 
 const assignPhoneNumber = (phoneNumber, formEntry) => {
-  const formatCorrect = validatePhoneNumber(phoneNumber);
+  const formatCorrect = isPhoneNumberValid(phoneNumber);
   if (!formatCorrect) {
     return false;
   }
@@ -45,7 +45,7 @@ const assignPhoneNumber = (phoneNumber, formEntry) => {
 };
 
 const assignAddressLine1 = (address, formEntry) => {
-  const formatCorrect = validateAddress(address);
+  const formatCorrect = isAddressValid(address);
   if (!formatCorrect) {
     return false;
   }
@@ -55,7 +55,7 @@ const assignAddressLine1 = (address, formEntry) => {
 };
 
 const assignAddressLine2 = (address, formEntry) => {
-  const formatCorrect = validateAddress(address);
+  const formatCorrect = isAddressValid(address);
   if (!formatCorrect) {
     return false;
   }

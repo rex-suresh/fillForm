@@ -1,15 +1,17 @@
 const fs = require('fs');
 
-const captureName = (name, formEntry) => { formEntry.name = name; };
+const captureName = (name, formEntry) => {
+  const newName = name.trim();
+  formEntry.name = newName;
+};
 
 const captureDOB = (DOB, formEntry) => {
-  console.log(DOB);
   const dob = DOB.split(' ').map(datePart => parseInt(datePart));
   formEntry.DOB = dob;
 };
 
 const captureHobbies = (hobbies, formEntry) => {
-  const hobbiesList = hobbies.split(',');
+  const hobbiesList = hobbies.trim().split(',');
   formEntry.hobbies = hobbiesList;
   fillForm(formEntry);
 };

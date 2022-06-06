@@ -21,7 +21,7 @@ const validatePhoneNumber = (phoneNumber) => phoneNumber.toString()
 
 const validateAddress = (address) => address.length > 0;
 
-const captureName = (name, formEntry) => {
+const assignName = (name, formEntry) => {
   const formatIncorrect = validateName(name);
   if (formatIncorrect) {
     return false;
@@ -32,7 +32,7 @@ const captureName = (name, formEntry) => {
   return true;
 };
 
-const captureDOB = (DOB, formEntry) => {
+const assignDOB = (DOB, formEntry) => {
   const dob = DOB.split('-');
   const formatCorrect = validateDate(dob);
   if (!formatCorrect) {
@@ -43,7 +43,7 @@ const captureDOB = (DOB, formEntry) => {
   return true;
 };
 
-const captureHobbies = (hobbies, formEntry) => {
+const assignHobbies = (hobbies, formEntry) => {
   if (validateHobbies(hobbies)) {
     return false;
   }
@@ -53,7 +53,7 @@ const captureHobbies = (hobbies, formEntry) => {
   return true;
 };
 
-const capturePhoneNumber = (phoneNumber, formEntry) => {
+const assignPhoneNumber = (phoneNumber, formEntry) => {
   const formatCorrect = validatePhoneNumber(phoneNumber);
   if (!formatCorrect) {
     return false;
@@ -63,7 +63,7 @@ const capturePhoneNumber = (phoneNumber, formEntry) => {
   return true;
 };
 
-const captureAddressLine1 = (address, formEntry) => {
+const assignAddressLine1 = (address, formEntry) => {
   const formatCorrect = validateAddress(address);
   if (!formatCorrect) {
     return false;
@@ -73,7 +73,7 @@ const captureAddressLine1 = (address, formEntry) => {
   return true;
 };
 
-const captureAddressLine2 = (address, formEntry) => {
+const assignAddressLine2 = (address, formEntry) => {
   const formatCorrect = validateAddress(address);
   if (!formatCorrect) {
     return false;
@@ -92,27 +92,27 @@ const fillForm = (entry) => {
 
 const fieldData = [
   {
-    capture: captureName,
+    assign: assignName,
     message: 'Please Enter Your Name : '
   },
   {
-    capture: captureDOB,
+    assign: assignDOB,
     message: 'Please Enter Your DOB (YYYY-MM-DD): '
   },
   {
-    capture: captureHobbies,
+    assign: assignHobbies,
     message: 'Please Enter Your Hobbies : '
   },
   {
-    capture: capturePhoneNumber,
+    assign: assignPhoneNumber,
     message: 'Please Enter Your Phone Number : '
   },
   {
-    capture: captureAddressLine1,
+    assign: assignAddressLine1,
     message: 'Please Enter Your Address line 1 : '
   },
   {
-    capture: captureAddressLine2,
+    assign: assignAddressLine2,
     message: 'Please Enter Your Address line 2 : '
   },
   {
@@ -124,17 +124,17 @@ const main = (fieldData) => {
   const formEntry = {};
   
   let currentField = 0;
-  let { capture, message } = fieldData[currentField];
+  let { assign, message } = fieldData[currentField];
   console.log(message);
   
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (cell) => {
-    const captureStatus = capture(trimLine(cell), formEntry);
-    if (captureStatus) {
+    const assignStatus = assign(trimLine(cell), formEntry);
+    if (assignStatus) {
       currentField++;
     }
     
-    capture = fieldData[currentField].capture;
+    assign = fieldData[currentField].assign;
     message = fieldData[currentField].message;
     console.log(message);
   });

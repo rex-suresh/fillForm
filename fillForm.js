@@ -7,6 +7,15 @@ const validateName = (name) => {
   const nonAlphas = [].every.bind(name);
   return name.length < 5 || !nonAlphas(char => isAlphabet(char));
 };
+
+const validateDate = (date) => {
+  const lengths = [4, 2, 2];
+  return date.every((part, index) => part.length === lengths[index]) &&
+    date.every(part => isFinite(part));
+};
+
+const validateHobbies = (hobbies) => hobbies.length < 1;
+
 const captureName = (name, formEntry) => {
   const formatIncorrect = validateName(name);
   if (formatIncorrect) {
@@ -16,12 +25,6 @@ const captureName = (name, formEntry) => {
   const newName = name;
   formEntry.name = newName;
   return true;
-};
-
-const validateDate = (date) => {
-  const lengths = [4, 2, 2];
-  return date.every((part, index) => part.length === lengths[index]) &&
-    date.every(part => isFinite(part));
 };
 
 const captureDOB = (DOB, formEntry) => {
@@ -34,8 +37,6 @@ const captureDOB = (DOB, formEntry) => {
   formEntry.DOB = dob.map(datePart => parseInt(datePart));
   return true;
 };
-
-const validateHobbies = (hobbies) => hobbies.length < 1;
 
 const captureHobbies = (hobbies, formEntry) => {
   if (validateHobbies(hobbies)) {
@@ -53,26 +54,27 @@ const fillForm = (entry) => {
   fs.writeFileSync(formFile, JSON.stringify(entry), 'utf8');
 };
 
-const main = () => {
+const fieldData = [
+  {
+    capture: captureName,
+    message: 'Please Enter Your Name : '
+  },
+  {
+    capture: captureDOB,
+    message: 'Please Enter Your DOB (YYYY-MM-DD): '
+  },
+  {
+    capture: captureHobbies,
+    message: 'Please Enter Your Hobbies : '
+  },
+  {
+    capture: () => process.exit(0),
+    message: 'Thank You'
+  }
+];
+
+const main = (fieldData) => {
   const formEntry = {};
-  const fieldData = [
-    {
-      capture: captureName,
-      message: 'Please Enter Your Name : '
-    },
-    {
-      capture: captureDOB,
-      message: 'Please Enter Your DOB (YYYY-MM-DD): '
-    },
-    {
-      capture: captureHobbies,
-      message: 'Please Enter Your Hobbies : '
-    },
-    {
-      capture: () => process.exit(0),
-      message: 'Thank You'
-    }
-  ];
   
   let currentField = 0;
   let { capture, message } = fieldData[currentField];
@@ -91,4 +93,4 @@ const main = () => {
   });
 };
 
-main();
+main(fieldData);

@@ -1,32 +1,31 @@
-const { assignName, assignDOB, assignHobbies } = require('./assignValues.js');
-const { assignPhoneNumber, assignAddressLine1, assignAddressLine2 } =
-  require('./assignValues.js');
-
+const { Form } = require('./form.js');
 const trimLine = (lines) => lines.trim();
+
+const form = new Form('./formsData.json');
 
 const fieldData = [
   {
-    assign: assignName,
+    assign: (cell) => form.assignName(cell),
     message: 'Please Enter Your Name : '
   },
   {
-    assign: assignDOB,
+    assign: (cell) => form.assignDOB(cell),
     message: 'Please Enter Your DOB (YYYY-MM-DD): '
   },
   {
-    assign: assignHobbies,
+    assign: (cell) => form.assignHobbies(cell),
     message: 'Please Enter Your Hobbies : '
   },
   {
-    assign: assignPhoneNumber,
+    assign: (cell) => form.assignPhoneNumber(cell),
     message: 'Please Enter Your Phone Number : '
   },
   {
-    assign: assignAddressLine1,
+    assign: (cell) => form.assignAddressLine1(cell),
     message: 'Please Enter Your Address line 1 : '
   },
   {
-    assign: assignAddressLine2,
+    assign: (cell) => form.assignAddressLine2(cell),
     message: 'Please Enter Your Address line 2 : '
   },
   {
@@ -35,19 +34,17 @@ const fieldData = [
 ];
 
 const main = (fieldData) => {
-  const formEntry = {};
-  
   let currentField = 0;
   let { assign, message } = fieldData[currentField];
   console.log(message);
   
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (cell) => {
-    const assignStatus = assign(trimLine(cell), formEntry);
+    const assignStatus = assign(trimLine(cell));
     if (assignStatus) {
       currentField++;
     }
-    
+
     assign = fieldData[currentField].assign;
     message = fieldData[currentField].message;
     console.log(message);

@@ -1,3 +1,5 @@
+const { fieldData } = require('./fieldData.js');
+
 class Form {
   #formEntry; #fieldData; #currentIndex;
   
@@ -31,8 +33,13 @@ class Form {
     return this.#currentIndex;
   }
 
+  getCurrentMessage() {
+    return this.#fieldData[this.#currentIndex].message;
+  }
+
   getFormEntry() {
     return this.#formEntry;
   }
 }
-exports.Form = Form;
+
+exports.Form = new Form(fieldData);

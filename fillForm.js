@@ -12,20 +12,14 @@ const fillForm = (formsFilePath, formEntry) => {
 
 const main = (fieldData, formsFilePath) => {
   const form = new Form(fieldData);
-  
-  let currentField = form.getCurrentIndex();
-  let { message } = fieldData[currentField];
-  console.log(message);
+  console.log(form.getCurrentMessage());
   
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (line) => {
     form.handleAssignment(trimLine(line));
-    
-    currentField = form.getCurrentIndex();
-    message = fieldData[currentField].message;
-    console.log(message);
+    console.log(form.getCurrentMessage());
 
-    if (currentField === fieldData.length - 1) {
+    if (form.getCurrentIndex() === fieldData.length - 1) {
       fillForm(formsFilePath, form.getFormEntry());
     }
   });

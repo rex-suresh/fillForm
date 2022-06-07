@@ -1,81 +1,38 @@
-const fs = require('fs');
-const { isNameValid, isDateValid, isHobbiesValid,
-  isPhoneNumberValid, isAddressValid } = require('./validations.js');
-
 class Form {
-  #formEntry; #formsFile;
-  constructor(formsFile) {
-    this.#formsFile = formsFile;
+  #formEntry; #fieldData; #currentIndex;
+  
+  constructor(fieldData) {
+    this.#fieldData = fieldData;
     this.#formEntry = {};
+    this.#currentIndex = 0;
   }
 
-  assignName(name) {
-    const formatIncorrect = isNameValid(name);
+  assign(line) {
+    const { validator: isValid, format, placeHolder } =
+      this.#fieldData[this.#currentIndex];
+    
+    const formatIncorrect = isValid(line);
     if (formatIncorrect) {
       return false;
     }
-  
-    this.#formEntry.name = name;
-    return true;
-  }
-  
-  assignDOB(DOB) {
-    const dob = DOB.split('-');
-    const formatCorrect = isDateValid(dob);
-    if (!formatCorrect) {
-      return false;
-    }
     
-    this.#formEntry.DOB = dob;
+    this.#formEntry[placeHolder] = format(line, this.#formEntry[placeHolder]);
     return true;
   }
-  
-  assignHobbies(hobbies) {
-    if (isHobbiesValid(hobbies)) {
-      return false;
+
+  handleAssignment(line) {
+    const assignmentStatus = this.assign(line);
+    if (assignmentStatus) {
+      this.#currentIndex++;
     }
-    
-    const hobbiesList = hobbies.split(',');
-    this.#formEntry.hobbies = hobbiesList;
-    return true;
   }
-  
-  assignPhoneNumber(phoneNumber) {
-    const formatCorrect = isPhoneNumberValid(phoneNumber);
-    if (!formatCorrect) {
-      return false;
-    }
-    
-    this.#formEntry.phoneNumber = phoneNumber.toString();
-    return true;
+
+  getCurrentIndex() {
+    return this.#currentIndex;
   }
-  
-  assignAddressLine1(address) {
-    const formatCorrect = isAddressValid(address);
-    if (!formatCorrect) {
-      return false;
-    }
-    
-    this.#formEntry.address = address;
-    return true;
-  }
-  
-  assignAddressLine2(address) {
-    const formatCorrect = isAddressValid(address);
-    if (!formatCorrect) {
-      return false;
-    }
-    
-    this.#formEntry.address = this.#formEntry.address +
-      ' ' + address;
-    this.fillForm();
-    return true;
-  }
-  
-  fillForm() {
-    fs.writeFileSync(this.#formsFile,
-      JSON.stringify(this.#formEntry, ' ', 2), 'utf8');
-    setImmediate(() => process.exit(0));
+
+  getFormEntry() {
+    return this.#formEntry;
   }
 }
 exports.Form = Form;

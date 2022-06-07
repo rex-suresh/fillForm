@@ -1,54 +1,34 @@
+const fs = require('fs');
 const { Form } = require('./form.js');
+const { fieldData } = require('./fieldData.js');
+
 const trimLine = (lines) => lines.trim();
+const fillForm = (formsFilePath, formEntry) => {
+  fs.writeFileSync(formsFilePath,
+    JSON.stringify(formEntry, ' ', 2), 'utf8');
 
-const form = new Form('./formsData.json');
+  setImmediate(() => process.exit(0));
+};
 
-const fieldData = [
-  {
-    assign: (cell) => form.assignName(cell),
-    message: 'Please Enter Your Name : '
-  },
-  {
-    assign: (cell) => form.assignDOB(cell),
-    message: 'Please Enter Your DOB (YYYY-MM-DD): '
-  },
-  {
-    assign: (cell) => form.assignHobbies(cell),
-    message: 'Please Enter Your Hobbies : '
-  },
-  {
-    assign: (cell) => form.assignPhoneNumber(cell),
-    message: 'Please Enter Your Phone Number : '
-  },
-  {
-    assign: (cell) => form.assignAddressLine1(cell),
-    message: 'Please Enter Your Address line 1 : '
-  },
-  {
-    assign: (cell) => form.assignAddressLine2(cell),
-    message: 'Please Enter Your Address line 2 : '
-  },
-  {
-    message: 'Thank You'
-  }
-];
-
-const main = (fieldData) => {
-  let currentField = 0;
-  let { assign, message } = fieldData[currentField];
+const main = (fieldData, formsFilePath) => {
+  const form = new Form(fieldData);
+  
+  let currentField = form.getCurrentIndex();
+  let { message } = fieldData[currentField];
   console.log(message);
   
   process.stdin.setEncoding('utf8');
-  process.stdin.on('data', (cell) => {
-    const assignStatus = assign(trimLine(cell));
-    if (assignStatus) {
-      currentField++;
-    }
-
-    assign = fieldData[currentField].assign;
+  process.stdin.on('data', (line) => {
+    form.handleAssignment(trimLine(line));
+    
+    currentField = form.getCurrentIndex();
     message = fieldData[currentField].message;
     console.log(message);
+
+    if (currentField === fieldData.length - 1) {
+      fillForm(formsFilePath, form.getFormEntry());
+    }
   });
 };
 
-main(fieldData);
+main(fieldData, './formsData.json');

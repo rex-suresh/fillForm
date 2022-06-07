@@ -1,13 +1,9 @@
 {
   "name": "suresh",
-  "DOB": [
-    1234,
-    12,
-    12
-  ],
+  "dob": "1234-12-12",
   "hobbies": [
-    "a"
+    "ad"
   ],
-  "phoneNumber": "1234123412",
-  "address": "as and"
+  "phoneNumber": "1234567890",
+  "address": "asdf\nasdf"
 }

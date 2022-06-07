@@ -1,6 +1,5 @@
 const fs = require('fs');
-const { Form } = require('./form.js');
-const { fieldData } = require('./fieldData.js');
+const { Form: form } = require('./form.js');
 
 const trimLine = (lines) => lines.trim();
 const fillForm = (formsFilePath, formEntry) => {
@@ -10,19 +9,18 @@ const fillForm = (formsFilePath, formEntry) => {
   setImmediate(() => process.exit(0));
 };
 
-const main = (fieldData, formsFilePath) => {
-  const form = new Form(fieldData);
-  console.log(form.getCurrentMessage());
+const main = (form, formsFilePath) => {
+  console.log(form.currentMessage());
   
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (line) => {
     form.handleAssignment(trimLine(line));
-    console.log(form.getCurrentMessage());
+    console.log(form.currentMessage());
 
-    if (form.getCurrentIndex() === fieldData.length - 1) {
+    if (form.isFormFilled()) {
       fillForm(formsFilePath, form.getFormEntry());
     }
   });
 };
 
-main(fieldData, './formsData.json');
+main(form, './formsData.json');

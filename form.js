@@ -29,12 +29,12 @@ class Form {
     }
   }
 
-  getCurrentIndex() {
-    return this.#currentIndex;
+  currentMessage() {
+    return this.#fieldData[this.#currentIndex].message;
   }
 
-  getCurrentMessage() {
-    return this.#fieldData[this.#currentIndex].message;
+  isFormFilled() {
+    return this.#currentIndex === this.#fieldData.length - 1;
   }
 
   getFormEntry() {

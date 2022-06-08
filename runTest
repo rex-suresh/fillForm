@@ -1,4 +1,4 @@
 #! /bin/bash
 
 bash test/*.sh
-mocha -w -R 'dot'
+mocha -w

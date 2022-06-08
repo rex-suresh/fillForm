@@ -82,7 +82,7 @@ class Form {
     return currentField.isFilled();
   }
 
-  handleAssignment(response) {
+  registerResponse(response) {
     const assignmentStatus = this.assign(response);
     if (assignmentStatus) {
       this.#currentIndex++;
@@ -98,7 +98,7 @@ class Form {
     return this.#currentIndex === this.#fieldData.length;
   }
 
-  getForm() {
+  getFormEntry() {
     const fieldEntry = this.#fieldData.reduce( (form, field) => {
       const { title, response } = field.getEntry();
       form[title] = response;

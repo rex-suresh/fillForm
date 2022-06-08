@@ -16,10 +16,10 @@ const registerResponses = (form, formsFilePath, log) => {
     const allLines = handleLine.lines();
     
     allLines.forEach(lineResponse => {
-      form.handleAssignment(lineResponse);
+      form.registerResponse(lineResponse);
   
       if (form.isFormFilled()) {
-        writeToFile(formsFilePath, form.getForm());
+        writeToFile(formsFilePath, form.getFormEntry());
         log('Thank You');
       } else {
         log(form.prompt());

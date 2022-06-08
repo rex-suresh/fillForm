@@ -1,26 +1,28 @@
 const fs = require('fs');
-const { Form: form } = require('./form.js');
+const { getForm } = require('./fieldData.js');
 
-const trimLine = (lines) => lines.trim();
 const fillForm = (formsFilePath, formEntry) => {
   fs.writeFileSync(formsFilePath,
     JSON.stringify(formEntry, ' ', 2), 'utf8');
 
-  setImmediate(() => process.exit(0));
+  setImmediate(() => process.stdin.destroy());
 };
 
-const main = (form, formsFilePath) => {
-  console.log(form.currentMessage());
+const main = (formsFilePath, log) => {
+  const form = getForm();
+  log(form.prompt());
   
   process.stdin.setEncoding('utf8');
-  process.stdin.on('data', (line) => {
-    form.handleAssignment(trimLine(line));
-    console.log(form.currentMessage());
-
+  
+  process.stdin.on('data', (response) => {
+    form.handleAssignment(response.trim());
     if (form.isFormFilled()) {
-      fillForm(formsFilePath, form.getFormEntry());
+      fillForm(formsFilePath, form.getForm());
+      log('Thank You');
+    } else {
+      log(form.prompt());
     }
   });
 };
 
-main(form, './formsData.json');
+main('./formsData.json', console.log);

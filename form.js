@@ -1,45 +1,104 @@
-const { fieldData } = require('./fieldData.js');
+class Field {
+  #title; #response; #validator; #formatter; #prompt;
+  constructor(title, prompt, validator, formatter) {
+    this.#title = title;
+    this.#prompt = prompt;
+    this.#validator = validator;
+    this.#formatter = formatter;
+    this.#response = null;
+  }
+
+  fill(response) {
+    this.#response = response;
+  }
+
+  isInvalid(response) {
+    return this.#validator(response);
+  }
+
+  getPrompt() {
+    return this.#prompt;
+  }
+
+  getEntry() {
+    return {title: this.#title, response: this.#formatter(this.#response)};
+  }
+}
+
+class MultiLineField {
+  #title; #responses; #validator; #formatter; #prompts;
+  constructor(title, prompts, validator, formatter) {
+    this.#title = title;
+    this.#prompts = prompts;
+    this.#validator = validator;
+    this.#formatter = formatter;
+    this.#responses = [];
+  }
+
+  fill(response) {
+    this.#responses.push(response);
+  }
+
+  isInvalid(response) {
+    return this.#validator(response);
+  }
+
+  getPrompt() {
+    return this.#prompts[this.#responses.length];
+  }
+
+  getEntry() {
+    return {title: this.#title, response: this.#formatter(this.#responses)};
+  }
+}
 
 class Form {
-  #formEntry; #fieldData; #currentIndex;
+  #fieldData; #currentIndex;
   
-  constructor(fieldData) {
-    this.#fieldData = fieldData;
-    this.#formEntry = {};
+  constructor() {
+    this.#fieldData = [];
     this.#currentIndex = 0;
   }
 
-  assign(line) {
-    const { validator: isValid, format, placeHolder } =
-      this.#fieldData[this.#currentIndex];
-    
-    const formatIncorrect = isValid(line);
-    if (formatIncorrect) {
+  addField(field) {
+    this.#fieldData.push(field);
+  }
+
+  assign(response) {
+    const currentField = this.#fieldData[this.#currentIndex];
+    if (currentField.isInvalid(response)) {
       return false;
     }
     
-    this.#formEntry[placeHolder] = format(line, this.#formEntry[placeHolder]);
+    currentField.fill(response);
     return true;
   }
 
-  handleAssignment(line) {
-    const assignmentStatus = this.assign(line);
+  handleAssignment(response) {
+    const assignmentStatus = this.assign(response);
     if (assignmentStatus) {
       this.#currentIndex++;
     }
   }
 
-  currentMessage() {
-    return this.#fieldData[this.#currentIndex].message;
+  prompt() {
+    const currentField = this.#fieldData[this.#currentIndex];
+    return currentField.getPrompt();
   }
 
   isFormFilled() {
-    return this.#currentIndex === this.#fieldData.length - 1;
+    return this.#currentIndex === this.#fieldData.length;
   }
 
-  getFormEntry() {
-    return this.#formEntry;
+  getForm() {
+    const fieldEntry = this.#fieldData.reduce( (form, field) => {
+      const { title, response } = field.getEntry();
+      form[title] = response;
+      return form;
+    }, {});
+
+    return fieldEntry;
   }
 }
 
-exports.Form = new Form(fieldData);
+module.exports = {Form, Field, MultiLineField};

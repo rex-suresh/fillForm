@@ -19,9 +19,7 @@ const isPhoneNumberValid = (phoneNumber) =>
 
 const isAddressValid = (address) => address.length < 1;
 
-exports.isAlphabet = isAlphabet;
-exports.isNameValid = isNameValid;
-exports.isDateValid = isDateValid;
-exports.isHobbiesValid = isHobbiesValid;
-exports.isAddressValid = isAddressValid;
-exports.isPhoneNumberValid = isPhoneNumberValid;
+module.exports = {
+  isAlphabet, isNameValid, isDateValid,
+  isHobbiesValid, isAddressValid, isPhoneNumberValid
+};

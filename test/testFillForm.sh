@@ -2,7 +2,7 @@
 responses='Suresh\n1234-12-12\nsome,hobbies\n1234567890\nadd1\nadd2';
 testName=' fillForm - should fill form'
 
-echo -e "${responses}" | node "../fillForm.js" &> /dev/null ;
+node "../fillForm.js" <<< "${responses}" &> /dev/null;
 diff "./expectedForm" "../forms.json" &> /dev/null ;
 
 if [[ $? -eq "0" ]];

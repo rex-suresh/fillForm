@@ -12,6 +12,10 @@ class Field {
     this.#response = response;
   }
 
+  isFilled() {
+    return this.#response !== null;
+  }
+
   isInvalid(response) {
     return this.#validator(response);
   }
@@ -37,6 +41,10 @@ class MultiLineField {
 
   fill(response) {
     this.#responses.push(response);
+  }
+
+  isFilled() {
+    return this.#responses.length > 1;
   }
 
   isInvalid(response) {
@@ -71,7 +79,7 @@ class Form {
     }
     
     currentField.fill(response);
-    return true;
+    return currentField.isFilled();
   }
 
   handleAssignment(response) {

@@ -22,7 +22,7 @@ const getForm = () => {
   form.addField(
     new Field(
       'dob',
-      'Please Enter Your DOB (YYYY-MM-DD): ',
+      'Please Enter Your DOB (YYYY-MM-DD) : ',
       isDateInvalid,
       toString
     )
@@ -50,7 +50,6 @@ const getForm = () => {
     ],
     isAddressInvalid, joinLines
   );
-  form.addField(addressField);
   form.addField(addressField);
   
   return form;

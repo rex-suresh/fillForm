@@ -4,9 +4,9 @@ const {
   toString, joinLines } = require('./formatters.js');
 
 const {
-  isNameValid, isDateValid,
-  isHobbiesValid, isPhoneNumberValid,
-  isAddressValid } = require('./validations.js');
+  isNameInvalid, isDateInvalid,
+  isHobbiesInvalid, isPhoneNumberInvalid,
+  isAddressInvalid } = require('./Validations.js');
 
 const getForm = () => {
   const form = new Form();
@@ -14,7 +14,7 @@ const getForm = () => {
     new Field(
       'name',
       'Please Enter Your Name : ',
-      isNameValid,
+      isNameInvalid,
       identity
     )
   );
@@ -23,7 +23,7 @@ const getForm = () => {
     new Field(
       'dob',
       'Please Enter Your DOB (YYYY-MM-DD): ',
-      isDateValid,
+      isDateInvalid,
       toString
     )
   );
@@ -31,7 +31,7 @@ const getForm = () => {
     new Field(
       'hobbies',
       'Please Enter Your Hobbies : ',
-      isHobbiesValid,
+      isHobbiesInvalid,
       formatToList
     )
   );
@@ -39,7 +39,7 @@ const getForm = () => {
     new Field(
       'phone_number',
       'Please Enter Your Phone Number : ',
-      isPhoneNumberValid,
+      isPhoneNumberInvalid,
       toString
     )
   );
@@ -48,7 +48,7 @@ const getForm = () => {
       'Please Enter Your Address line 1 : ',
       'Please Enter Your Address line 2 : '
     ],
-    isAddressValid, joinLines
+    isAddressInvalid, joinLines
   );
   form.addField(addressField);
   form.addField(addressField);

@@ -1,4 +1,4 @@
 #! /bin/bash
 
-cd test/ ; bash testFillForm.sh
+bash test/*.sh
 mocha -w -R 'dot'

@@ -1,0 +1,26 @@
+{
+  "name": "fillform",
+  "version": "1.0.0",
+  "description": "A simple javascript program to fill a json form",
+  "main": "fillForm.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./runTest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rex-suresh/fillForm.git"
+  },
+  "author": "rex-suresh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rex-suresh/fillForm/issues"
+  },
+  "homepage": "https://github.com/rex-suresh/fillForm#readme",
+  "devDependencies": {
+    "eslint": "^8.17.0",
+    "mocha": "^10.0.0"
+  }
+}
